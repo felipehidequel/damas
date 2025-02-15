@@ -12,7 +12,6 @@ const Board = ({ gameId }) => {
     fetchGame();
   }, [gameId]);
 
-  // Função para verificar se o movimento é válido
   function isValidMove(fromRow, fromCol, toRow, toCol, piece) {
     if (board[toRow][toCol]) return false; // Verifica se a casa de destino está vazia
 
