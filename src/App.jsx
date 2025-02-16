@@ -8,8 +8,13 @@ const Board = ({ gameId }) => {
   const [score, setScore] = useState({ R: 0, B: 0 });
   const [selectedPiece, setSelectedPiece] = useState(null);
 
+  // Atualiza o board e o jogo em tempo real
   useEffect(() => {
-    fetchGame();
+    const interval = setInterval(() => {
+      fetchGame();
+    }, 1000); // A cada 1 segundo
+
+    return () => clearInterval(interval); // Limpa o intervalo ao sair do componente
   }, [gameId]);
 
   function isValidMove(fromRow, fromCol, toRow, toCol, piece) {
@@ -108,12 +113,30 @@ const Board = ({ gameId }) => {
     }
   }
 
+  // Função para copiar o gameId
+  const copyGameId = () => {
+    navigator.clipboard.writeText(gameId);
+    alert("Game ID copiado para a área de transferência!");
+  };
+
   return (
     <div>
       <div className="flex justify-between mb-4">
         <div className="text-white">Red: {score.R}</div>
         <div className="text-white">Black: {score.B}</div>
       </div>
+
+      {/* Exibindo o Game ID copiável */}
+      <div className="bg-blue-500 text-white p-2 mb-4 flex justify-between items-center">
+        <span>{gameId}</span>
+        <button
+          onClick={copyGameId}
+          className="bg-yellow-500 text-black p-1 rounded"
+        >
+          Copiar ID
+        </button>
+      </div>
+
       <div className="grid grid-cols-8 w-96 border-4 border-black">
         {board.flatMap((row, rIdx) =>
           row.map((cell, cIdx) => (
